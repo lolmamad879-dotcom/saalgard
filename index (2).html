@@ -1,0 +1,451 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>برای تو، عشق من</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap');
+
+        * {box-sizing: border-box}
+
+        :root {--rx: 0; --ry: 0; --gx: 50%; --gy: 50%}
+
+        body {
+            margin: 0;
+            background: #09090d;
+            color: #fff;
+            font-family: Vazirmatn, Tahoma, sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden
+        }
+
+        body:before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            opacity: .09;
+            background-image: radial-gradient(#e8b5bd 1px, transparent 1px);
+            background-size: 25px 25px
+        }
+
+        #bg {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none
+        }
+
+        .screen {
+            display: none;
+            min-height: 100vh;
+            align-items: center;
+            justify-content: center;
+            padding: 25px 16px;
+            position: relative;
+            z-index: 1
+        }
+
+        .screen.active {display: flex; animation: in .6s ease}
+
+        @keyframes in {
+            from {opacity: 0; transform: translateY(16px)}
+            to {opacity: 1; transform: none}
+        }
+
+        @keyframes flip {
+            from {opacity: 0; transform: perspective(1200px) rotateX(-65deg) translateY(60px) scale(.9)}
+            to {opacity: 1; transform: perspective(1200px) rotateX(0) translateY(0) scale(1)}
+        }
+
+        /* افکت سه‌بعدی */
+        .tilt {
+            transform: perspective(1100px) rotateX(calc(var(--rx) * var(--k, 1) * 1deg)) rotateY(calc(var(--ry) * var(--k, 1) * 1deg));
+            will-change: transform
+        }
+
+        .panel {width: min(100%, 460px); text-align: center}
+
+        .lock {
+            --k: 1.2;
+            padding: 40px 24px;
+            border: 1px solid #ffffff20;
+            border-radius: 28px;
+            background: linear-gradient(145deg, #19151b, #0d0c11);
+            box-shadow: calc(var(--ry) * -2px) calc(25px + var(--rx) * 2px) 80px #0009
+        }
+
+        .heart {font-size: 38px; color: #d83b59; animation: pulse 1.8s infinite}
+
+        @keyframes pulse {50% {transform: scale(1.12)}}
+
+        h1 {font-size: 27px; font-weight: 500; margin: 12px 0}
+
+        .sub {color: #b9aeb4; font-size: 14px}
+
+        .error {height: 24px; color: #ff8294; font-size: 13px; margin-top: 12px}
+
+        .wrap {width: min(100%, 820px)}
+
+        #letterPage.active .wrap {animation: flip 1.1s cubic-bezier(.2, .8, .2, 1)}
+
+        .letter {
+            --k: .7;
+            background: #f8f0e9;
+            color: #30252a;
+            padding: clamp(24px, 6vw, 55px);
+            border-radius: 5px 5px 18px 5px;
+            box-shadow: calc(var(--ry) * -3px) calc(25px + var(--rx) * 3px) 90px #0009;
+            line-height: 2.2;
+            font-size: clamp(14px, 2.2vw, 17px);
+            position: relative;
+            overflow: hidden
+        }
+
+        .letter:before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            opacity: .2;
+            background: repeating-linear-gradient(transparent 0 39px, #d6c7bf 40px)
+        }
+
+        .letter>* {position: relative}
+
+        .letter>.glare {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: radial-gradient(circle at var(--gx) var(--gy), #ffffff55, transparent 55%)
+        }
+
+        .letter h2 {color: #9f1834; font-size: 25px; margin: 0 0 18px}
+
+        .letter p {margin: 0 0 12px}
+
+        .sign {color: #9f1834; font-weight: 700; margin-top: 22px !important}
+
+        .btn {
+            border: 0;
+            border-radius: 999px;
+            padding: 12px 25px;
+            background: linear-gradient(100deg, #a91130, #e34b61);
+            color: #fff;
+            font: 600 14px Vazirmatn;
+            cursor: pointer;
+            transition: transform .2s, box-shadow .2s
+        }
+
+        .btn:hover {transform: translateY(-2px); box-shadow: 0 8px 22px #c51f3a66}
+
+        .back {background: #ffffff0c; border: 1px solid #ffffff30}
+
+        .nav {display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 22px}
+
+        .page {width: min(100%, 740px); text-align: center}
+
+        .eyebrow {color: #e47b8d; font-size: 12px; letter-spacing: 2px}
+
+        .title {font-size: clamp(26px, 5vw, 38px); font-weight: 500; line-height: 1.7; margin: 12px 0}
+
+        .copy {color: #d2c4c9; font-size: clamp(15px, 2.5vw, 18px); line-height: 2.2; font-weight: 300}
+
+        .frame {
+            --k: 1;
+            width: min(100%, 540px);
+            height: min(56vh, 430px);
+            min-height: 230px;
+            margin: 24px auto 18px;
+            padding: 9px;
+            border: 1px solid #b53a53;
+            border-radius: 22px;
+            background: #1c1017;
+            box-shadow: calc(var(--ry) * -2px) calc(20px + var(--rx) * 2px) 60px #0008
+        }
+
+        .frame img {width: 100%; height: 100%; object-fit: contain; border-radius: 14px}
+
+        .bigheart {font-size: 58px; color: #d94360; animation: pulse 2s infinite}
+
+        .date {font-size: clamp(34px, 8vw, 54px); color: #f1b1bd; font-weight: 700; margin: 15px 0}
+        .q{color:#f1b1bd;font-size:22px;font-weight:500;margin:20px 0 16px}
+        #pass{width:100%;padding:13px 16px;border-radius:16px;border:1px solid #bd586b;background:#ffffff0a;color:#fff;font:500 18px Vazirmatn;text-align:center;outline:0;transition:.2s}
+        #pass:focus{border-color:#e34b61;box-shadow:0 0 13px #d33b5855}
+        .shake{animation:sh .4s}
+        @keyframes sh{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+        .lock .error{margin:12px 0}
+        #letterPage{align-items:flex-start;padding-top:40px}
+        .letter{min-height:min(60vh,420px)}
+        #next{display:none}
+        #next.show{display:inline-block;animation:in .6s}
+        #fx{position:fixed;inset:0;width:100%;height:100%;z-index:50;pointer-events:none}
+        #music{position:fixed;bottom:16px;left:16px;z-index:70;width:44px;height:44px;padding:0;border-radius:50%;border:1px solid #ffffff30;background:#ffffff0c;color:#fff;font-size:18px;cursor:pointer;display:none}
+        .cl{color:#e47b8d;font-size:13px;margin-top:22px}
+        .count{display:flex;gap:10px;justify-content:center;margin:12px 0 4px}
+        .count div{min-width:68px;padding:12px 8px;border:1px solid #b53a53;border-radius:16px;background:#ffffff0a}
+        .count b{display:block;font-size:26px;color:#f1b1bd;font-weight:700}
+        .count span{font-size:12px;color:#b9aeb4}
+        #no{transition:left .3s,top .3s;z-index:60}
+        #yes{transition:transform .3s}
+        .hint{min-height:28px;color:#e47b8d;font-size:15px;margin-top:10px}
+        .bub{min-height:32px;margin-top:10px;color:#f1b1bd;font-size:clamp(16px,3vw,19px)}
+        .pop{animation:pop .5s ease both}
+        @keyframes pop{from{opacity:0;transform:translateY(8px) scale(.95)}to{opacity:1;transform:none}}
+        .ph{position:relative;width:100%;height:100%;border-radius:14px;overflow:hidden}
+        .ph img{clip-path:inset(100% 0 0 0);transition:clip-path 2.4s ease-in-out}
+        .ph.on img{clip-path:inset(0)}
+        .bar{position:absolute;left:0;right:0;top:100%;height:38px;margin-top:-19px;opacity:0;background:linear-gradient(transparent,#ffffff38,transparent);backdrop-filter:blur(6px);border-top:1px solid #e34b6188;border-bottom:1px solid #e34b6188;transition:top 2.4s ease-in-out}
+        .ph.on .bar{top:0;animation:bf 2.6s forwards}
+        @keyframes bf{0%{opacity:0}10%,90%{opacity:1}100%{opacity:0}}
+    </style>
+</head>
+
+<body>
+    <canvas id="bg"></canvas><canvas id="fx"></canvas>
+    <audio id="aud" src="kiana.mp3" loop preload="auto"></audio>
+    <button id="music" aria-label="music">🔊</button>
+
+    <section class="screen active" id="gate">
+        <div class="panel lock tilt">
+            <div class="heart">♥</div>
+            <h1>یه چیزی فقط برای تو...</h1>
+            <p class="sub">برای ورود، به سوال زیر جواب بده</p>
+            <div class="q">اسم دیگه دوغ؟؟</div>
+            <input id="pass" type="text" dir="rtl" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="جواب رو به فارسی بنویس">
+            <div class="error" id="error"></div>
+            <button class="btn" id="enter">ورود ←</button>
+        </div>
+    </section>
+
+    <section class="screen" id="letterPage">
+        <div class="wrap">
+            <article class="letter tilt">
+                <div class="glare"></div>
+                <h2>دختر ناز قشنگم</h2>
+                <p>پارسال همین موقع بود که تو، بهترین هدیه خدا وارد زندگیم شدی و همه چیزو واسم عوض کردی</p>
+                <p>قبل از تو همه چیز برام بی رنگ بود همه دنیا واسم سیاه بود ولی با ورود تو به زندگیم اولش دنیامو تبدیلش کردی به خاکستری و بعدش به رنگین کمون و الانم به رنگایی که تا الان هیچکس حتی اسمشونو نشنیده و حتی خودمم نمیدونستم همچین رنگایی وجود داشتن.</p>
+                <p>تا ابد از خدا ممنونم که تورو اورد توی زندگیم</p>
+                <p>کنار تو خوشحال ترین ادم روی کره زمینم</p>
+                <p>به امید روزی که کنار هم باشیم تا بتونیم این روز رو قشنگ تر کنار هم جشن بگیریم</p>
+                <p>از طرفی خوشحالم از طرفی دلگیرم از اینکه پیشم نیستی همه چیزم.</p>
+                <p>میخوام 24 تا چیزی که توی تو خیلی دوست دارمو بگم و خیلی زیاد تر از ۲۴ تا هستن ولی تو میدونی چرا ۲۴ رو انتخاب کردم.</p>
+                <p>1-چشمات<br>2-لپات<br>3-دستات<br>4-خنده هات<br>5-موهات<br>6- لبات<br>7-ویدیو مسیجات<br>8-عکس فرستادنت<br>9-بولی بولی گوشات<br>10-ابرو هات<br>11-مهربونیات<br>12-اعصاب خوردیات<br>13-قهر کردنات<br>14-لج بازی کردنات<br>15-بااااااشه بااااااشه گفتنات<br>16-کل روزتو واسم گفتنات<br>17-چرتو پرت گقتنات<br>18-راه رفتنت با اینکه چند بار دیدمش<br>19-قدت<br>20-معصومیتت<br>21-مظلومیتت<br>22-هوشت<br>23-کمرت<br>24-پاهات</p>
+                <p>ووووووو کلییییییییییی چیز دیگه کهههههههههه فقط ۲۴ تاشو گفتم.</p>
+                <p>عاشقانه دوست دارم همه چیزم.</p>
+                <p class="sign">سالگرد آشناییمون مبارک باشه عشق زندگیم.</p>
+            </article>
+            <div class="nav"><button class="btn back" id="skip">نمایش کامل نامه</button><button class="btn" id="next" onclick="go('memoryPage')">صفحه بعدی ←</button></div>
+        </div>
+    </section>
+
+    <section class="screen" id="memoryPage">
+        <div class="page">
+            <div class="eyebrow">A MOMENT TO REMEMBER</div>
+            <h2 class="title">همه چیز از اینجا شروع شد</h2>
+            <div class="bub" id="memMsg"></div>
+            <div class="frame tilt"><div class="ph" id="ph"><img id="photo" alt="عکس خاطره‌انگیز شما" src="screenshot.jpg"><div class="bar"></div></div></div>
+            <div class="nav"><button class="btn back" onclick="go('letterPage')">→ نامه</button><button class="btn"
+                    onclick="go('futurePage')">صفحه بعدی ←</button></div>
+        </div>
+    </section>
+
+    <section class="screen" id="futurePage">
+        <div class="page">
+            <div class="bigheart">♥</div>
+            <p class="copy">شاید از اولین هامون خیلی گذشته باشن اما هنوز کلی اولین قشنگ دیگه مونده که باهم تجربه کنیم
+            </p>
+            <div class="cl">از روزی که اومدی توی زندگیم تا الان...</div>
+            <div class="count"><div><b id="cd">۰</b><span>روز</span></div><div><b id="ch">۰</b><span>ساعت</span></div><div><b id="cm">۰</b><span>دقیقه</span></div><div><b id="cs">۰</b><span>ثانیه</span></div></div>
+            <h2 class="title">این فقط شروع داستان ماست....</h2>
+            <div class="nav"><button class="btn back" onclick="go('memoryPage')">→ صفحه قبل </button><button class="btn"
+                    onclick="go('askPage')">یه چیز دیگه مونده ❤️</button></div>
+        </div>
+    </section>
+
+    <section class="screen" id="askPage">
+        <div class="page">
+            <div class="bigheart">♥</div>
+            <h2 class="title">یه سوال دارم...</h2>
+            <div class="date">دوسم داری؟ 🥺</div>
+            <div class="hint" id="hint"></div>
+            <div class="nav"><button class="btn" id="yes">آره ❤️</button><button class="btn back" id="no">نه</button></div>
+        </div>
+    </section>
+
+    <section class="screen" id="lastPage">
+        <div class="page">
+            <div class="bigheart">♥</div>
+            <div class="eyebrow">To my little k . I love you so much</div>
+            <div class="date">۲۴ آبان</div>
+            <h2 class="title">برای جفتمون مبارک دختر قشنگم</h2>
+            <p class="copy">امیدوارم قشنگ‌ترین خاطره‌هامون هنوز در راه باشن...</p>
+            <div class="nav"><button class="btn back" onclick="go('askPage')">→ صفحه قبل</button></div>
+        </div>
+    </section>
+
+    <script>
+        /* ---------- ورود، صفحه‌ها، موسیقی ---------- */
+        const $ = id => document.getElementById(id), pass = $('pass'), err = $('error'), music = $('music'), aud = $('aud');
+        const norm = t => t.replace(/[\s\u200c\u200d]/g, '').replace(/ي/g, 'ی').replace(/ك/g, 'ک');
+        function tryLogin() {
+            if (norm(pass.value) === 'دپغ') {
+                err.textContent = ''; aud.volume = .6;
+                aud.play().then(() => music.textContent = '🔊').catch(() => music.textContent = '🔇');
+                music.style.display = 'block'; go('letterPage');
+            } else {err.textContent = 'جواب درست نیست، دوباره امتحان کن'; pass.classList.remove('shake'); void pass.offsetWidth; pass.classList.add('shake')}
+        }
+        $('enter').onclick = tryLogin; pass.addEventListener('keydown', e => {if (e.key === 'Enter') tryLogin()});
+        music.onclick = () => {if (aud.paused) {aud.play(); music.textContent = '🔊'} else {aud.pause(); music.textContent = '🔇'}};
+        function go(id) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); $(id).classList.add('active'); window.scrollTo({top: 0, behavior: 'smooth'});
+            if (id === 'letterPage') typeLetter(); if (id === 'memoryPage') memSeq();
+            if (id === 'lastPage') for (let i = 0; i < 6; i++) setTimeout(() => burst(Math.random() * innerWidth, innerHeight * (.2 + Math.random() * .4), 22), i * 350);
+        }
+
+        /* ---------- نامه‌ی تایپ‌شونده ---------- */
+        const items = [...document.querySelectorAll('.letter h2,.letter p')], full = items.map(e => e.innerHTML);
+        items.forEach(e => e.innerHTML = '');
+        let typed = false, typing = false, stopT = false;
+        const sleep = ms => new Promise(r => setTimeout(r, ms));
+        $('skip').onclick = () => stopT = true;
+        async function typeLetter() {
+            if (typed || typing) return; typing = true; stopT = false; await sleep(900);
+            for (let i = 0; i < items.length; i++) {
+                const el = items[i], html = full[i], list = html.includes('<br>'); let out = '';
+                if (!stopT) for (let j = 0; j < html.length && !stopT; j++) {
+                    if (html[j] === '<') {const k = html.indexOf('>', j); out += html.slice(j, k + 1); j = k; continue}
+                    out += html[j]; el.innerHTML = out;
+                    if (j % 10 === 0) {const b = el.getBoundingClientRect().bottom; if (b > innerHeight - 90) window.scrollBy(0, b - innerHeight + 170)}
+                    await sleep(html[j] === ' ' ? 10 : list ? 12 : 26);
+                }
+                el.innerHTML = html; if (!stopT) await sleep(350);
+            }
+            typed = true; typing = false; $('skip').style.display = 'none'; $('next').classList.add('show');
+        }
+
+        /* ---------- صفحه عکس ---------- */
+        function say(el, t) {el.textContent = t; el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop')}
+        let memRun = false;
+        async function memSeq() {
+            if (memRun) return; memRun = true;
+            await sleep(900); say($('memMsg'), 'عه نیومد عکسه؟');
+            await sleep(2300); $('ph').classList.add('on');
+            await sleep(2600); say($('memMsg'), 'اهاااااا ایناهاششششششش');
+        }
+
+        /* ---------- شمارنده ---------- */
+        const START = new Date('2025-11-15T00:00:00'); // ۲۴ آبان ۱۴۰۴ — اینو با تاریخ آشنایی‌تون عوض کن
+        const fa = n => String(n).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]);
+        function tick() {const t = Math.max(0, Date.now() - START); $('cd').textContent = fa(Math.floor(t / 864e5)); $('ch').textContent = fa(Math.floor(t / 36e5) % 24); $('cm').textContent = fa(Math.floor(t / 6e4) % 60); $('cs').textContent = fa(Math.floor(t / 1e3) % 60)}
+        tick(); setInterval(tick, 1000);
+
+        /* ---------- بارش قلب با کلیک ---------- */
+        const fx = $('fx'), fc = fx.getContext('2d'), cols = ['216,59,89', '233,75,97', '241,177,189', '255,255,255']; let HS = [];
+        function burst(x, y, n = 14) {
+            for (let i = 0; i < n; i++) {const a = Math.random() * 6.28, sp = 2 + Math.random() * 6; HS.push({x, y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp - 3, g: .12, s: 12 + Math.random() * 20, a: 1, da: .012, r: 0, vr: (Math.random() - .5) * .1, t: Math.random() < .2 ? '۲۴' : '♥', c: cols[Math.random() * 3 | 0]})}
+            for (let i = 0; i < 6; i++) HS.push({x: x + (Math.random() - .5) * 300, y: -20, vx: Math.random() - .5, vy: 1 + Math.random() * 2, g: .03, s: 14 + Math.random() * 18, a: 1, da: .004, r: 0, vr: (Math.random() - .5) * .05, t: '♥', c: cols[Math.random() * 3 | 0]});
+            if (HS.length > 400) HS.splice(0, HS.length - 400);
+        }
+        function drawFx() {
+            fc.clearRect(0, 0, W, H);
+            for (let i = HS.length - 1; i >= 0; i--) {
+                const h = HS[i]; h.vy += h.g; h.vx *= .99; h.x += h.vx; h.y += h.vy; h.r += h.vr; h.a -= h.da;
+                if (h.a <= 0 || h.y > H + 40) {HS.splice(i, 1); continue}
+                fc.save(); fc.translate(h.x, h.y); fc.rotate(h.r); fc.globalAlpha = h.a; fc.font = `${h.s}px Vazirmatn, sans-serif`;
+                fc.textAlign = 'center'; fc.textBaseline = 'middle'; fc.fillStyle = `rgb(${h.c})`; fc.fillText(h.t, 0, 0); fc.restore();
+            }
+        }
+        addEventListener('pointerdown', e => burst(e.clientX, e.clientY));
+
+        /* ---------- سؤال آخر: دکمه‌ی نه فرار می‌کنه ---------- */
+        const no = $('no'), yes = $('yes'), hint = $('hint'), msgs = ['باااااااااشههههههه باشششششههههه دوسم نداری؟', 'ببخششششششششششااااااااااا', 'یعنی چی؟', 'بع بزن اره ببینم', 'بزننننننن اره بعععععع', 'جدی ای'];
+        let flees = 0, lastF = 0;
+        function flee() {
+            lastF = Date.now(); const r = no.getBoundingClientRect(), w = r.width, h = r.height;
+            if (!no.dataset.fl) {
+                const ph = document.createElement('span'); ph.style.width = w + 'px'; ph.style.height = h + 'px'; no.before(ph);
+                no.style.position = 'fixed'; no.style.margin = 0; no.style.left = r.left + 'px'; no.style.top = r.top + 'px'; no.dataset.fl = 1; void no.offsetWidth;
+            }
+            let x, y, t = 0;
+            do {x = 10 + Math.random() * (innerWidth - w - 20); y = 10 + Math.random() * (innerHeight - h - 20); t++} while (t < 20 && Math.hypot(x + w / 2 - mouse.x, y + h / 2 - mouse.y) < 160);
+            no.style.left = x + 'px'; no.style.top = y + 'px';
+            say(hint, msgs[flees++ % msgs.length]); yes.style.transform = `scale(${Math.min(1 + flees * .06, 1.7)})`;
+        }
+        function nearNo() {
+            if (!$('askPage').classList.contains('active')) return;
+            const r = no.getBoundingClientRect();
+            if (Math.hypot(mouse.x - (r.left + r.width / 2), mouse.y - (r.top + r.height / 2)) < r.width / 2 + 55 && Date.now() - lastF > 150) flee();
+        }
+        no.addEventListener('pointerenter', flee);
+        no.addEventListener('pointerdown', e => {e.preventDefault(); flee()});
+        no.addEventListener('click', e => e.preventDefault());
+        yes.onclick = () => go('lastPage');
+
+        /* ---------- ۲۴های معلق پس‌زمینه ---------- */
+        const cv = document.getElementById('bg'), cx = cv.getContext('2d');
+        let W, H, P = [], mouse = {x: -9999, y: -9999};
+        const R = 150;
+
+        function mk(rand) {
+            const s = 18 + Math.random() * 46;
+            return {
+                x: Math.random() * W, y: rand ? Math.random() * H : H + s,
+                s, bx: (Math.random() - .5) * .3, by: -(.15 + Math.random() * .35),
+                vx: 0, vy: 0, r: Math.random() * 6.28, vr: (Math.random() - .5) * .006,
+                a: .07 + Math.random() * .2, c: Math.random() < .25 ? '216,59,89' : '232,181,189'
+            };
+        }
+        function resize() {
+            const d = devicePixelRatio || 1; W = innerWidth; H = innerHeight;
+            cv.width = W * d; cv.height = H * d; cx.setTransform(d, 0, 0, d, 0, 0); fx.width = W * d; fx.height = H * d; fc.setTransform(d, 0, 0, d, 0, 0);
+            const n = Math.max(22, Math.min(60, Math.round(W * H / 20000)));
+            P = Array.from({length: n}, () => mk(true));
+        }
+        addEventListener('resize', resize); resize();
+
+        /* ---------- ماوس و افکت سه‌بعدی ---------- */
+        let tx = 0, ty = 0, cxr = 0, cyr = 0, gx = 50, gy = 50, tgx = 50, tgy = 50;
+        addEventListener('pointermove', e => {
+            mouse.x = e.clientX; mouse.y = e.clientY;
+            tx = (.5 - e.clientY / H) * 20;   // rotateX
+            ty = (e.clientX / W - .5) * 20;   // rotateY
+            tgx = e.clientX / W * 100; tgy = e.clientY / H * 100; nearNo();
+        });
+        addEventListener('pointerleave', () => {mouse.x = mouse.y = -9999; tx = ty = 0; tgx = tgy = 50});
+        addEventListener('pointerup', e => {if (e.pointerType === 'touch') {mouse.x = mouse.y = -9999}});
+
+        const root = document.documentElement.style;
+        function loop() {
+            cx.clearRect(0, 0, W, H);
+            for (const p of P) {
+                const dx = p.x - mouse.x, dy = p.y - mouse.y, d = Math.hypot(dx, dy);
+                if (d < R && d > 0) {
+                    const f = (1 - d / R) * 2.2;
+                    p.vx += dx / d * f; p.vy += dy / d * f; p.vr += (dx > 0 ? 1 : -1) * f * .004;
+                }
+                p.vx += (p.bx - p.vx) * .04; p.vy += (p.by - p.vy) * .04; p.vr *= .985;
+                p.x += p.vx; p.y += p.vy; p.r += p.vr + .001;
+                if (p.y < -p.s * 2) Object.assign(p, mk(false));
+                if (p.x < -p.s * 2) p.x = W + p.s; if (p.x > W + p.s * 2) p.x = -p.s;
+                if (p.y > H + p.s * 3) p.y = -p.s;
+                cx.save(); cx.translate(p.x, p.y); cx.rotate(p.r);
+                cx.font = `600 ${p.s}px Vazirmatn, Tahoma, sans-serif`;
+                cx.textAlign = 'center'; cx.textBaseline = 'middle';
+                cx.fillStyle = `rgba(${p.c},${p.a})`; cx.fillText('۲۴', 0, 0);
+                cx.restore();
+            }
+            drawFx(); cxr += (tx - cxr) * .08; cyr += (ty - cyr) * .08; gx += (tgx - gx) * .1; gy += (tgy - gy) * .1;
+            root.setProperty('--rx', cxr.toFixed(2)); root.setProperty('--ry', cyr.toFixed(2));
+            root.setProperty('--gx', gx.toFixed(1) + '%'); root.setProperty('--gy', gy.toFixed(1) + '%');
+            requestAnimationFrame(loop);
+        }
+        loop();
+    </script>
+</body>
+
+</html>
