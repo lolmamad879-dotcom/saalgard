@@ -202,23 +202,6 @@
         .bar{position:absolute;left:0;right:0;top:100%;height:38px;margin-top:-19px;opacity:0;background:linear-gradient(transparent,#ffffff38,transparent);backdrop-filter:blur(6px);border-top:1px solid #e34b6188;border-bottom:1px solid #e34b6188;transition:top 2.4s ease-in-out}
         .ph.on .bar{top:0;animation:bf 2.6s forwards}
         @keyframes bf{0%{opacity:0}10%,90%{opacity:1}100%{opacity:0}}
-        #env{position:fixed;top:12px;left:50%;margin-left:-29px;z-index:60;width:58px;height:40px;padding:0;border:0;background:none;cursor:pointer;perspective:300px;animation:bob 2.4s ease-in-out infinite}
-        @keyframes bob{50%{transform:translateY(4px)}}
-        #env .ev{position:absolute;inset:0;background:#f8f0e9;border-radius:5px;box-shadow:0 6px 20px #0008,0 0 18px #c51f3a55}
-        #env .flap{position:absolute;left:0;right:0;top:0;height:62%;background:#dcc9be;clip-path:polygon(0 0,100% 0,50% 100%);transform-origin:top;transition:transform .6s;z-index:2}
-        #env .seal{position:absolute;left:50%;top:44%;width:20px;height:20px;margin:-10px 0 0 -10px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#e34b61,#9f1834);color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;z-index:3;box-shadow:0 2px 6px #0007;transition:transform .5s,opacity .5s}
-        #env.opened{animation:none}
-        #env.opened .flap{transform:rotateX(180deg)}
-        #env.opened .seal{transform:scale(1.8) rotate(25deg);opacity:0}
-        #mail{position:fixed;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;padding:20px 14px;background:#09090dd9;backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .4s}
-        #mail.open{opacity:1;pointer-events:auto}
-        .sheet{position:relative;width:min(100%,640px);background:#f8f0e9;color:#30252a;border-radius:5px 5px 18px 5px;box-shadow:0 25px 90px #000a;transform:translateY(-42vh) scale(.1) rotate(-4deg);opacity:0;transition:transform .9s cubic-bezier(.2,.9,.2,1),opacity .4s}
-        #mail.open .sheet{transform:none;opacity:1}
-        .in{max-height:80vh;overflow-y:auto;padding:clamp(22px,5vw,42px);line-height:2.1;font-size:clamp(14px,2.3vw,17px)}
-        .in p{margin:0 0 12px;opacity:0}
-        #mail.open .in p{animation:pop .6s ease both}
-        .in .sg{color:#9f1834;font-weight:700}
-        #mx{position:absolute;top:-14px;left:-10px;width:34px;height:34px;border-radius:50%;border:0;background:linear-gradient(100deg,#a91130,#e34b61);color:#fff;cursor:pointer;font-size:15px}
     </style>
 </head>
 
@@ -226,17 +209,6 @@
     <canvas id="bg"></canvas><canvas id="fx"></canvas>
     <audio id="aud" src="kiana.mp3" loop preload="auto"></audio>
     <button id="music" aria-label="music">🔊</button>
-    <button id="env" aria-label="نامه"><span class="ev"></span><i class="flap"></i><i class="seal">♥</i></button>
-    <div id="mail"><div class="sheet"><button id="mx" aria-label="بستن">✕</button><div class="in">
-        <p>نمی‌دونم اصلا چطوری شد که یک سال گذشت انگار همین دیروز بود که همه‌چی شروع شد و الان من یک ساله که تو رو توی زندگیم دارم. توی این یه سال کلی چیز باهم تحربه کردیم لحظه‌های قشنگ و روزهایی که شاید اسونم نبودن برامون ولی همشون برای من باارزشن، چون تو بخشی از تک‌تک اون لحظه‌ها بودی.</p>
-        <p>باور کن هنوزم وقتی به این یک سال فکر می‌کنم، همه‌چی دونه‌دونه جلوی چشممه. از اولین روزها و اولین حرف‌هامون گرفته تا همه ی  اتفاقات کوچیک و بزرگی که بینمون افتاد  هیچ‌کدومشون برام معمولی نیستن شاید خیلی از اون لحظه‌ها برای بقیه فقط اتفاقات ساده‌ای باشن، ولی برای من خاطراتی‌ان که دلم نمی‌خواد هیچ‌وقت فراموششون کنم.</p>
-        <p>قبل از تو اصلا یادم نمیاد این یه سال از قشنگ‌ترین دوره‌های زندگی من بوده و یکی از بزرگ‌ترین دلایل قشنگ بودنش حضور توئه.</p>
-        <p>نمی‌دونی چقدر خوشحالم که الان دارمت که می‌تونم دوست داشته باشم باهات حرف بزنم، از روزم برات بگم و تو رو توی لحظه‌های زندگیم داشته باشم. چقدر خوشحالم که بین این همه آدم مسیر زندگی من به تو رسید.</p>
-        <p>من نمی‌خوام این خاطره‌ها فقط مال گذشته باشن. دلم می‌خواد هنوز کلی خاطره نساخته با هم داشته باشیم، کلی روز قشنگ، کلی حرف، کلی خنده و کلی سالگرد دیگه که بشینیم و بهشون فکر کنیم و از اینکه هنوز کنار همیم خوشحال باشیم.</p>
-        <p>نریمان من واقعا نمی‌خوام از دستت بدم. نمی‌خوام این چیزی که توی این یک سال ساختیم، تموم بشه. تو برام خیلی بیشتر از چیزی هستی که بتونم با چند تا کلمه توضیحش بدم.</p>
-        <p>امیدوارم این فقط اولین سال از سال‌های زیادی باشه که قراره کنار هم تجربه کنیم.</p>
-        <p class="sg">دوست دارم عزیزترینم.🩶</p>
-    </div></div></div>
 
     <section class="screen active" id="gate">
         <div class="panel lock tilt">
@@ -355,18 +327,6 @@
             }
             typed = true; typing = false; $('skip').style.display = 'none'; $('next').classList.add('show');
         }
-
-        /* ---------- نامه‌ی مهر و موم‌شده ---------- */
-        const env = $('env'), mail = $('mail');
-        function openMail() {
-            env.classList.add('opened');
-            mail.querySelectorAll('.in p').forEach((p, i) => p.style.animationDelay = (.7 + i * .5) + 's');
-            setTimeout(() => mail.classList.add('open'), 450);
-        }
-        function closeMail() {mail.classList.remove('open')}
-        env.onclick = openMail; $('mx').onclick = closeMail;
-        mail.addEventListener('pointerdown', e => {if (e.target === mail) closeMail()});
-        addEventListener('keydown', e => {if (e.key === 'Escape') closeMail()});
 
         /* ---------- صفحه عکس ---------- */
         function say(el, t) {el.textContent = t; el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop')}
