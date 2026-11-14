@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>برای تو، عشق من</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap');
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            background: #09090d;
+            color: #fff;
+            font-family: Vazirmatn, Tahoma, sans-serif;
+            min-height: 100vh
+        }
+
+        body:before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            opacity: .09;
+            background-image: radial-gradient(#e8b5bd 1px, transparent 1px);
+            background-size: 25px 25px
+        }
+
+        .screen {
+            display: none;
+            min-height: 100vh;
+            align-items: center;
+            justify-content: center;
+            padding: 25px 16px;
+            position: relative
+        }
+
+        .screen.active {
+            display: flex;
+            animation: in .6s ease
+        }
+
+        @keyframes in {
+            from {
+                opacity: 0;
+                transform: translateY(16px)
+            }
+
+            to {
+                opacity: 1;
+                transform: none
+            }
+        }
+
+        .panel {
+            width: min(100%, 460px);
+            text-align: center
+        }
+
+        .lock {
+            padding: 40px 24px;
+            border: 1px solid #ffffff20;
+            border-radius: 28px;
+            background: linear-gradient(145deg, #19151b, #0d0c11);
+            box-shadow: 0 25px 80px #0009
+        }
+
+        .heart {
+            font-size: 38px;
+            color: #d83b59;
+            animation: pulse 1.8s infinite
+        }
+
+        @keyframes pulse {
+            50% {
+                transform: scale(1.12)
+            }
+        }
+
+        h1 {
+            font-size: 27px;
+            font-weight: 500;
+            margin: 12px 0
+        }
+
+        .sub {
+            color: #b9aeb4;
+            font-size: 14px
+        }
+
+        .dots {
+            display: flex;
+            direction: ltr;
+            justify-content: center;
+            gap: 13px;
+            margin: 26px
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border: 1px solid #bd586b;
+            border-radius: 50%
+        }
+
+        .dot.on {
+            background: #c51f3a;
+            box-shadow: 0 0 13px #d33b58
+        }
+
+        .keys {
+            display: grid;
+            grid-template-columns: repeat(3, 66px);
+            gap: 10px;
+            justify-content: center;
+            direction: ltr
+        }
+
+        .key {
+            height: 56px;
+            border-radius: 16px;
+            border: 1px solid #ffffff1c;
+            background: #ffffff0a;
+            color: white;
+            font: 500 21px Vazirmatn;
+            cursor: pointer
+        }
+
+        .key:hover {
+            background: #94172f
+        }
+
+        .blank {
+            visibility: hidden
+        }
+
+        .utility {
+            font-size: 14px
+        }
+
+        .error {
+            height: 24px;
+            color: #ff8294;
+            font-size: 13px;
+            margin-top: 12px
+        }
+
+        .wrap {
+            width: min(100%, 820px)
+        }
+
+        .letter {
+            background: #f8f0e9;
+            color: #30252a;
+            padding: clamp(24px, 6vw, 55px);
+            border-radius: 5px 5px 18px 5px;
+            box-shadow: 0 25px 90px #0009;
+            line-height: 2.2;
+            font-size: clamp(14px, 2.2vw, 17px);
+            position: relative;
+            overflow: hidden
+        }
+
+        .letter:before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            opacity: .2;
+            background: repeating-linear-gradient(transparent 0 39px, #d6c7bf 40px)
+        }
+
+        .letter>* {
+            position: relative
+        }
+
+        .letter h2 {
+            color: #9f1834;
+            font-size: 25px;
+            margin: 0 0 18px
+        }
+
+        .letter p {
+            margin: 0 0 12px
+        }
+
+        .sign {
+            color: #9f1834;
+            font-weight: 700;
+            margin-top: 22px !important
+        }
+
+        .btn {
+            border: 0;
+            border-radius: 999px;
+            padding: 12px 25px;
+            background: linear-gradient(100deg, #a91130, #e34b61);
+            color: #fff;
+            font: 600 14px Vazirmatn;
+            cursor: pointer
+        }
+
+        .back {
+            background: #ffffff0c;
+            border: 1px solid #ffffff30
+        }
+
+        .nav {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 22px
+        }
+
+        .page {
+            width: min(100%, 740px);
+            text-align: center
+        }
+
+        .eyebrow {
+            color: #e47b8d;
+            font-size: 12px;
+            letter-spacing: 2px
+        }
+
+        .title {
+            font-size: clamp(26px, 5vw, 38px);
+            font-weight: 500;
+            line-height: 1.7;
+            margin: 12px 0
+        }
+
+        .copy {
+            color: #d2c4c9;
+            font-size: clamp(15px, 2.5vw, 18px);
+            line-height: 2.2;
+            font-weight: 300
+        }
+
+        .frame {
+            width: min(100%, 540px);
+            height: min(56vh, 430px);
+            min-height: 230px;
+            margin: 24px auto 18px;
+            padding: 9px;
+            border: 1px solid #b53a53;
+            border-radius: 22px;
+            background: #1c1017;
+            box-shadow: 0 20px 60px #0008
+        }
+
+        .frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 14px
+        }
+
+        .upload {
+            display: inline-block;
+            color: #f1c5cc;
+            border: 1px dashed #a94a5c;
+            border-radius: 999px;
+            padding: 9px 17px;
+            font-size: 13px;
+            cursor: pointer
+        }
+
+        .upload input {
+            display: none
+        }
+
+        .bigheart {
+            font-size: 58px;
+            color: #d94360;
+            animation: pulse 2s infinite
+        }
+
+        .date {
+            font-size: clamp(34px, 8vw, 54px);
+            color: #f1b1bd;
+            font-weight: 700;
+            margin: 15px 0
+        }
+    </style>
+</head>
+
+<body>
+    <section class="screen active" id="gate">
+        <div class="panel lock">
+            <div class="heart">♥</div>
+            <h1>یه چیزی فقط برای تو...</h1>
+            <p class="sub">برای ورود، رمز رو وارد کن</p>
+            <div class="dots"><i class="dot"></i><i class="dot"></i></div>
+            <div class="keys">
+                <button class="key" data-n="1">1</button><button class="key" data-n="2">2</button><button class="key"
+                    data-n="3">3</button>
+                <button class="key" data-n="4">4</button><button class="key" data-n="5">5</button><button class="key"
+                    data-n="6">6</button>
+                <button class="key" data-n="7">7</button><button class="key" data-n="8">8</button><button class="key"
+                    data-n="9">9</button>
+                <button class="key blank"></button><button class="key" data-n="0">0</button><button class="key utility"
+                    id="erase">پاک‌کردن</button>
+            </div>
+            <div class="error" id="error"></div>
+        </div>
+    </section>
+
+    <section class="screen" id="letterPage">
+        <div class="wrap">
+            <article class="letter">
+                <h2>دختر ناز قشنگم</h2>
+                <p>پارسال همین موقع بود که تو، بهترین هدیه خدا وارد زندگیم شدی و همه چیزو واسم عوض کردی</p>
+                <p>قبل از تو همه چیز برام بی رنگ بود همه دنیا واسم سیاه بود ولی با ورود تو به زندگیم اولش دنیامو تبدیلش
+                    کردی به خاکستری و بعدش به رنگین کمون و الانم به رنگایی که تا الان هیچکس حتی اسمشونو نشنیده و حتی
+                    خودمم نمیدونستم همچین رنگایی وجود داشتن.</p>
+                <p>تا ابد از خدا ممنونم که تورو اورد توی زندگیم</p>
+                <p>کنار تو خوشحال ترین ادم روی کره زمینم</p>
+                <p>به امید روزی که کنار هم باشیم تا بتونیم این روز رو قشنگ تر کنار هم جشن بگیریم</p>
+                <p>از طرفی خوشحالم از طرفی دلگیرم از اینکه پیشم نیستی همه چیزم.</p>
+                <p>میخوام ۲۴ تا چیزی که توی تو خیلی دوست دارمو بگم و خیلی زیاد تر از ۲۴ تا هستن ولی تو میدونی چرا ۲۴ رو
+                    انتخاب کردم.</p>
+                <p>۱-چشمات<br>۲-لپات<br>۳-دستات<br>۴-خنده هات<br>۵-موهات<br>۶-لبات<br>۷-ویدیو مسیجات<br>۸-عکس
+                    فرستادنت<br>۹-بولی بولی گوشات<br>۱۰-ابرو هات<br>۱۱-مهربونیات<br>۱۲-اعصاب خوردیات<br>۱۳-قهر
+                    کردنات<br>۱۴-لج بازی کردنات<br>۱۵-بااااااشه بااااااشه گفتنات<br>۱۶-کل روزتو واسم گفتنات<br>۱۷-چرتو
+                    پرت گقتنات<br>۱۸-راه رفتنت با اینکه چند بار
+                    دیدمش<br>۱۹-قدت<br>۲۰-معصومیتت<br>۲۱-مظلومیتت<br>۲۲-هوشت<br>۲۳-کمرت<br>۲۴-پاهات</p>
+                <p class="sign">سالگرد آشناییمون مبارک باشه عشق زندگیم. ❤️</p>
+            </article>
+            <div class="nav"><button class="btn" onclick="go('memoryPage')">صفحه بعدی ←</button></div>
+        </div>
+    </section>
+
+    <section class="screen" id="memoryPage">
+        <div class="page">
+            <div class="eyebrow">A MOMENT TO REMEMBER</div>
+            <h2 class="title">همه چیز از اینجا شروع شد</h2>
+            <div class="frame"><img id="photo" alt="عکس خاطره‌انگیز شما" src="screenshot.jpg">
+            </div>
+
+            <div class="nav"><button class="btn back" onclick="go('letterPage')">→ نامه</button><button class="btn"
+                    onclick="go('futurePage')">صفحه بعدی ←</button></div>
+        </div>
+    </section>
+
+    <section class="screen" id="futurePage">
+        <div class="page">
+            <div class="bigheart">♥</div>
+            <p class="copy">شاید از اولین هامون خیلی گذشته باشن اما هنوز کلی اولین قشنگ دیگه مونده که باهم تجربه کنیم
+            </p>
+            <h2 class="title">این فقط شروع داستان ماست....</h2>
+            <div class="nav"><button class="btn back" onclick="go('memoryPage')">→ صفحه قبل </button><button class="btn"
+                    onclick="go('lastPage')">یه چیز دیگه مونده ❤️</button></div>
+        </div>
+    </section>
+
+    <section class="screen" id="lastPage">
+        <div class="page">
+            <div class="bigheart">♥</div>
+            <div class="eyebrow">To my little k . I love you so much</div>
+            <div class="date">۲۴ آبان</div>
+            <h2 class="title">برای جفتمون مبارک دختر قشنگم</h2>
+            <p class="copy">امیدوارم قشنگ‌ترین خاطره‌هامون هنوز در راه باشن...</p>
+            <div class="nav"><button class="btn back" onclick="go('futurePage')">→ صفحه قبل</button></div>
+        </div>
+    </section>
+    <script>
+        let code = ''; const dots = [...document.querySelectorAll('.dot')], err = document.getElementById('error');
+        function refresh() {dots.forEach((d, i) => d.classList.toggle('on', i < code.length))}
+        function press(n) {if (code.length === 2) return; code += n; refresh(); err.textContent = ''; if (code.length === 2) {if (code === '24') setTimeout(() => go('letterPage'), 200); else {err.textContent = 'رمز درست نیست، دوباره امتحان کن'; setTimeout(() => {code = ''; refresh()}, 650)} } }
+        document.querySelectorAll('[data-n]').forEach(b => b.onclick = () => press(b.dataset.n));
+        document.getElementById('erase').onclick = () => {code = code.slice(0, -1); refresh(); err.textContent = ''};
+        document.addEventListener('keydown', e => {if (document.getElementById('gate').classList.contains('active')) {if (/^\d$/.test(e.key)) press(e.key); if (e.key === 'Backspace') {code = code.slice(0, -1); refresh()} } });
+        function go(id) {document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); document.getElementById(id).classList.add('active'); window.scrollTo({top: 0, behavior: 'smooth'})}
+        document.getElementById('photoInput').onchange = e => {let f = e.target.files[0]; if (!f) return; let r = new FileReader(); r.onload = ev => document.getElementById('photo').src = ev.target.result; r.readAsDataURL(f)};
+    </script>
+</body>
+
+</html>
